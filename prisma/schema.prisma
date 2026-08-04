@@ -144,16 +144,31 @@ model Match {
   groupId       Int         @map("group_id")
   teamAId       Int         @map("team_a_id")
   teamBId       Int         @map("team_b_id")
+  stadiumId     Int         @map("stadium_id")
 
   date          DateTime
-  place         String
   status        STATUS_MATCH
 
   teamA         Team @relation("TeamAMatches", fields: [teamAId], references: [id])
   teamB         Team @relation("TeamBMatches", fields: [teamBId], references: [id])
-  gameResult    GameResult?
   group         Group  @relation(fields: [groupId], references: [id])
+  stadium       Stadium @relation(fields: [stadiumId], references: [id])
+  gameResult    GameResult?
 
+
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+}
+
+model Stadium {
+  id            Int         @id @default(autoincrement())
+  publicId      String      @unique @default(uuid(7)) @map("public_id")
+
+  name          String
+  city          String
+  capacity      Int
+
+  match        Match[]
 
   createdAt    DateTime  @default(now()) @map("created_at")
   updatedAt    DateTime  @updatedAt @map("updated_at")
