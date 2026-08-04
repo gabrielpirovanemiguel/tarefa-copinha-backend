@@ -11,3 +11,184 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum USER_ROLE {
+    admin
+    user
+}
+
+enum LOG_ACTIONS {
+    teste
+}
+
+enum ENTITY_TYPES {
+    user
+}
+
+enum STATUS_MATCH {
+    encerrado
+    próximo
+    adiado
+    cancelado
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  publicId     String    @unique @default(uuid(7)) @map("public_id")
+
+  name         String 
+  username     String    @unique
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  role         USER_ROLE @default(user)
+
+  admin        Admin?
+  news         News[]
+
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+}
+
+model Admin {
+  id           Int       @id @default(autoincrement())
+  publicId     String    @unique @default(uuid(7)) @map("public_id")
+  userId       Int       @unique @map("user_id")
+
+  user         User      @relation(fields: [userId], references: [id])
+  logs         Log[]
+
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+}
+
+model Log {
+  id           Int         @id @default(autoincrement())
+  publicId     String      @unique @default(uuid(7)) @map("public_id") 
+  adminId      Int         @map("admin_id")
+
+  action       LOG_ACTIONS
+  entityType   ENTITY_TYPES @map("entity_type")
+  entityId     Int          @map("entity_id")
+  oldValues    Json?        @map("old_values")
+  newValues    Json?        @map("new_values")
+  description  String?
+
+  admin        Admin       @relation(fields: [adminId], references: [id])
+
+  createdAt    DateTime  @default(now()) @map("created_at")
+}
+
+model News {
+  id            Int         @id @default(autoincrement())
+  publicId      String      @unique @default(uuid(7)) @map("public_id")
+  authorId      Int         @map("author_id")
+  groupId       Int         @map("group_id")
+
+  title         String
+  openingText   String   @map("opening_text")
+  bodyText      String   @map("body_text")
+  coverImageUrl String   @map("cover_image_text")
+  readingTime   String   @map("reading_time")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  group        Group    @relation(fields: [groupId], references: [id])
+  author       User     @relation(fields: [authorId], references: [id])
+
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+}
+
+
+model Group {
+  id               Int       @id @default(autoincrement())
+  publicId         String    @unique @default(uuid(7)) @map("public_id")
+
+  name             String    @unique
+
+  team        Team[]
+  news        News[]
+  match       Match[]
+
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+}
+
+model Team {
+  id               Int       @id @default(autoincrement())
+  publicId         String    @unique @default(uuid(7)) @map("public_id")
+  groupId          Int       @map("group_id")
+
+  name             String    @unique
+  abbreviation     String    @unique
+  shieldImageUrl   String    @map("shield_image_url")
+  rankingPosition  Int       @map("ranking_position")
+  wins             Int
+  draws            Int
+  losses           Int
+  goalsFor         Int       @map("goals_for")
+  goalsAgainst     Int       @map("goals_against")
+  goalDifference   Int       @map("goals_difference")
+  points           Int
+
+  group        Group     @relation(fields: [groupId], references: [id])
+  matchesTeamA Match[]   @relation("TeamAMatches")
+  matchesTeamB Match[]   @relation("TeamBMatches")
+
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+}
+
+model Match {
+  id            Int         @id @default(autoincrement())
+  publicId      String      @unique @default(uuid(7)) @map("public_id")
+  groupId       Int         @map("group_id")
+  teamAId       Int         @map("team_a_id")
+  teamBId       Int         @map("team_b_id")
+
+  date          DateTime
+  place         String
+  status        STATUS_MATCH
+
+  teamA         Team @relation("TeamAMatches", fields: [teamAId], references: [id])
+  teamB         Team @relation("TeamBMatches", fields: [teamBId], references: [id])
+  gameResult    GameResult?
+  group         Group  @relation(fields: [groupId], references: [id])
+
+
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+}
+
+model GameResult {
+  id               Int       @id @default(autoincrement())
+  publicId         String    @unique @default(uuid(7)) @map("public_id")
+  teamAResultId    Int       @unique @map("team_a_result_id")
+  teamBResultId    Int       @unique @map("team_b_result_id")
+  matchId          Int       @unique @map("match_id")
+
+  teamAResult   TeamAResult @relation("TeamAGameResult", fields: [teamAResultId], references: [id])
+  teamBResult   TeamBResult @relation("TeamBGameResult", fields: [teamBResultId], references: [id])
+  match         Match  @relation(fields: [matchId], references: [id])
+
+  createdAt    DateTime  @default(now()) @map("created_at")
+}
+
+model TeamAResult {
+  id               Int       @id @default(autoincrement())
+  publicId         String    @unique @default(uuid(7)) @map("public_id")
+  goals            Int
+
+  gameResult   GameResult? @relation("TeamAGameResult")
+
+  createdAt    DateTime  @default(now()) @map("created_at")
+}
+
+model TeamBResult {
+  id               Int       @id @default(autoincrement())
+  publicId         String    @unique @default(uuid(7)) @map("public_id")
+  goals            Int
+
+  gameResult   GameResult? @relation("TeamBGameResult")
+
+  createdAt    DateTime  @default(now()) @map("created_at")
+}
