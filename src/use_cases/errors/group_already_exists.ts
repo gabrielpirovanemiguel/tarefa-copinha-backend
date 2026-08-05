@@ -1,6 +1,6 @@
 
 export class GroupAlreadyExistsError extends Error {
-    constructor() {
-        super("Já existe um grupo com esse nome.")
+    constructor(message?: string) {
+        super(message || "Já existe um grupo com esse nome.")
     }
 }

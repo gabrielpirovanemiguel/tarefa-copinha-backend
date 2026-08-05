@@ -10,6 +10,10 @@ export class GroupPrismaRepository implements GroupRepository {
         return await prisma.group.create({ data })
     }
 
+    async getGroupByPublicId(publicId: string, include?: Prisma.GroupInclude) {
+        return await prisma.group.findUnique({ where: { publicId }, include })
+    }
+
     async findGroupWhereUnique(where: Prisma.GroupWhereUniqueInput, include?: Prisma.GroupInclude) {
         return await prisma.group.findUnique({ where, include })
     }

@@ -127,7 +127,7 @@ model Team {
   losses           Int
   goalsFor         Int       @map("goals_for")
   goalsAgainst     Int       @map("goals_against")
-  goalDifference   Int       @map("goals_difference")
+  goalsDifference  Int       @map("goals_difference")
   points           Int
 
   group        Group     @relation(fields: [groupId], references: [id])

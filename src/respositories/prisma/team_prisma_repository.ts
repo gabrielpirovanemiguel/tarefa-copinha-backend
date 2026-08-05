@@ -7,4 +7,8 @@ export class TeamPrismaRepository implements TeamRepository {
     async createTeam(data: Prisma.TeamCreateInput) {
         return await prisma.team.create({ data })
     } 
+
+    async findTeamWhereUnique(where: Prisma.TeamWhereUniqueInput, include?: Prisma.TeamInclude) {
+        return await prisma.team.findUnique({ where, include })
+    }
 }
