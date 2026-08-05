@@ -30,6 +30,8 @@ enum ENTITY_TYPES {
     team
     stadium
     match
+    matchResult
+    teamResult
 }
 
 enum STATUS_MATCH {
@@ -160,7 +162,7 @@ model Match {
   teamB         Team @relation("TeamBMatches", fields: [teamBId], references: [id])
   group         Group  @relation(fields: [groupId], references: [id])
   stadium       Stadium @relation(fields: [stadiumId], references: [id])
-  gameResult    GameResult?
+  matchResult    MatchResult?
 
 
   createdAt    DateTime  @default(now()) @map("created_at")
@@ -181,15 +183,15 @@ model Stadium {
   updatedAt    DateTime  @updatedAt @map("updated_at")
 }
 
-model GameResult {
+model MatchResult {
   id               Int       @id @default(autoincrement())
   publicId         String    @unique @default(uuid(7)) @map("public_id")
   teamAResultId    Int       @unique @map("team_a_result_id")
   teamBResultId    Int       @unique @map("team_b_result_id")
   matchId          Int       @unique @map("match_id")
 
-  teamAResult   TeamAResult @relation("TeamAGameResult", fields: [teamAResultId], references: [id])
-  teamBResult   TeamBResult @relation("TeamBGameResult", fields: [teamBResultId], references: [id])
+  teamAResult   TeamAResult @relation("TeamAMatchResult", fields: [teamAResultId], references: [id])
+  teamBResult   TeamBResult @relation("TeamBMatchResult", fields: [teamBResultId], references: [id])
   match         Match  @relation(fields: [matchId], references: [id])
 
   createdAt    DateTime  @default(now()) @map("created_at")
@@ -200,7 +202,7 @@ model TeamAResult {
   publicId         String    @unique @default(uuid(7)) @map("public_id")
   goals            Int
 
-  gameResult   GameResult? @relation("TeamAGameResult")
+  matchResult   MatchResult? @relation("TeamAMatchResult")
 
   createdAt    DateTime  @default(now()) @map("created_at")
 }
@@ -210,7 +212,7 @@ model TeamBResult {
   publicId         String    @unique @default(uuid(7)) @map("public_id")
   goals            Int
 
-  gameResult   GameResult? @relation("TeamBGameResult")
+  matchResult   MatchResult? @relation("TeamBMatchResult")
 
   createdAt    DateTime  @default(now()) @map("created_at")
 }

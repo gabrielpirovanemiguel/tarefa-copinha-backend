@@ -1,0 +1,40 @@
+import { ENTITY_TYPES, LOG_ACTIONS, type TeamAResult, type TeamBResult } from "@/@types/prisma/client.js"
+import type { GenerateLogUseCase } from "../logs/generate_log.js"
+
+interface CreateTeamResultUseCaseRequest {
+    goalsTeam: number
+    team: 'A' | 'B'
+}
+
+interface CreateTeamResultUseCaseResponse {
+    teamResult: TeamAResult | TeamBResult
+}
+
+export class CreateTeamResultUseCase {
+    constructor(private teamResultRepository: any, private logRepository: GenerateLogUseCase) { }
+    async execute({ goalsTeam, team }: CreateTeamResultUseCaseRequest): Promise<CreateTeamResultUseCaseResponse> {
+        try {
+            let teamResult
+            if (team === 'A') {
+                teamResult = await this.teamResultRepository.createTeamAResult({ goals: goalsTeam })
+            } else {
+                teamResult = await this.teamResultRepository.createTeamBResult({ goals: goalsTeam })
+            }
+            try {
+                await this.logRepository.execute({
+                    adminId: 1,
+                    action: LOG_ACTIONS.creating,
+                    entityType: ENTITY_TYPES.teamResult,
+                    entityId: teamResult.id,
+                    newValues: goalsTeam,
+                    description: `Criando um resultado do time ${team}.`
+                })
+            } catch (logError) {
+                console.error('Falha ao gerar log:', logError)
+            }
+            return { teamResult }
+        } catch (error) {
+            throw error
+        }
+    }
+}
