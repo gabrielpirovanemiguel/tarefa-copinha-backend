@@ -10,6 +10,7 @@
     "postinstall": "prisma generate",
     "start": "npm run build && node build/server.js",
     "start:dev": "tsx watch src/server.ts",
+    "seeder": "tsx prisma/seeder.ts",
     "start:prod": "node build/server.js",
     "build": "tsup",
     "format": "prettier --write \"src/**/*.ts\"",
