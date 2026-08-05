@@ -18,11 +18,17 @@ enum USER_ROLE {
 }
 
 enum LOG_ACTIONS {
-    teste
+    creating
+    deleting
+    updating
+    
 }
 
 enum ENTITY_TYPES {
     user
+    group
+    team
+    stadium
 }
 
 enum STATUS_MATCH {

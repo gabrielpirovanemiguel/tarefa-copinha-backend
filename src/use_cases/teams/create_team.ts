@@ -1,8 +1,9 @@
-import type { Team } from "@/@types/prisma/client.js"
+import { ENTITY_TYPES, LOG_ACTIONS, type Team } from "@/@types/prisma/client.js"
 import type { GroupRepository } from "@/respositories/group_repository.js"
 import type { TeamRepository } from "@/respositories/team_repository.js"
 import { GroupNotFoundError } from "../errors/group_not_found.js"
 import { TeamAlreadyExistsError } from "../errors/team_already_exists.js"
+import type { GenerateLogUseCase } from "../logs/generate_log.js"
 
 interface CreateTeamUseCaseRequest {
     groupPublicId: string
@@ -26,7 +27,8 @@ interface CreateTeamUseCaseResponse {
 export class CreateTeamUseCase {
     constructor(
         private teamRepository: TeamRepository,
-        private groupRepository: GroupRepository
+        private groupRepository: GroupRepository,
+        private logRepository: GenerateLogUseCase
     ) { }
     async execute({
         groupPublicId,
@@ -50,25 +52,40 @@ export class CreateTeamUseCase {
             if (doesNameAlreadyExists) throw new TeamAlreadyExistsError("Já existe um time com esse nome.")
             if (doesAbbreviationAlreadyExists) throw new TeamAlreadyExistsError("Já existe um time com essa abreviação.")
             const groupId = doesGroupExists.id
-            const team = await this.teamRepository.createTeam({
-                name,
-                abbreviation,
-                shieldImageUrl,
-                rankingPosition,
-                wins,
-                draws,
-                losses,
-                goalsFor,
-                goalsAgainst,
-                goalsDifference,
-                points,
-                group: {
+            const data = {
+                    name,
+                    abbreviation,
+                    shieldImageUrl,
+                    rankingPosition,
+                    wins,
+                    draws,
+                    losses,
+                    goalsFor,
+                    goalsAgainst,
+                    goalsDifference,
+                    points,
+                    group: {
                     connect: { id: groupId }
                 }
-            })
-            return { team }
-        } catch (error) {
-            throw error
-        }
+            }
+            
+            const team = await this.teamRepository.createTeam(data)
+
+            try {
+                await this.logRepository.execute({
+                    adminId: 1,
+                    action: LOG_ACTIONS.creating,
+                    entityType: ENTITY_TYPES.group,
+                    entityId: team.id,
+                    newValues: data
+                })
+            } catch (logError) {
+                console.error('Falha ao gerar log:', logError)
+            }
+
+        return { team }
+    } catch(error) {
+        throw error
     }
+}
 }
