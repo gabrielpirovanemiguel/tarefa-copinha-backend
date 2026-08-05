@@ -1,7 +1,8 @@
 import Fastify from 'fastify'
-import z, { ZodError } from 'zod'
+import { ZodError } from 'zod'
 import fastifyJwt from '@fastify/jwt'
 import { env } from './env/index.js'
+import { appRoutes } from './http/routes.js'
 
 export const app = Fastify({ logger: true })
 
@@ -13,12 +14,13 @@ app.get('/health', async (request, reply) => {
     return reply.status(200).send({ status: 'ok' })
 })
 
+app.register(appRoutes)
 
-app.setErrorHandler((error, _request, reply) => {
+app.setErrorHandler((error: any, _request, reply) => {
     if (error instanceof ZodError) {
-        return reply
-            .status(400)
-            .send({ message: z.prettifyError(error).replace('\n ', '') })
+        return reply.status(400).send({
+            message: error.issues[0]?.message ?? 'Dados inválidos.'
+        })
     }
 
     if (error instanceof SyntaxError) {
@@ -30,5 +32,5 @@ app.setErrorHandler((error, _request, reply) => {
 
     return reply
         .status(500)
-        .send({ message: 'Erro interno do servidor!' + error.message })
+        .send({ message: 'Erro interno do servidor!' + error.message})
 })
