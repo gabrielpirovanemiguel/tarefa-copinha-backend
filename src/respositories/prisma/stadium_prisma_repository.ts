@@ -7,4 +7,8 @@ export class StadiumPrismaRepository implements StadiumRepository {
     async createStadium(data: Prisma.StadiumCreateInput) {
         return await prisma.stadium.create({ data })
     } 
+
+    async getStadiumByPublicId(publicId: string) {
+        return await prisma.stadium.findUnique({ where: { publicId } })
+    }
 }

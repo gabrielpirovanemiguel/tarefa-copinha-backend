@@ -29,6 +29,7 @@ enum ENTITY_TYPES {
     group
     team
     stadium
+    match
 }
 
 enum STATUS_MATCH {
