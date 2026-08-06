@@ -34,34 +34,31 @@ export class CreateMatchResultUseCase {
     ) { }
     async execute({ teamAGols, teamBGols, matchPublicId }: CreateMatchResultUseCaseRequest): Promise<CreateMatchResultUseCaseResponse> {
         try {
-            const doesMatchExist = await this.matchRepository.getMatchByPublicId(matchPublicId, { matchResult: true })
+            const doesMatchExist = await this.matchRepository.getMatchByPublicId(matchPublicId, { matchResult: true }) as Prisma.MatchGetPayload<{ include: { matchResult: true } }>
             if (!doesMatchExist) throw new MatchNotFoundError()
             if (doesMatchExist.matchResult) throw new MatchResultAlreadyExistsError()
-            
+
             const createTeamResult = makeCreateTeamsResultUseCase()
-            const { teamResult: teamAResult } = await createTeamResult.execute({goalsTeam: teamAGols, team: 'A'})
-            const { teamResult: teamBResult } = await createTeamResult.execute({goalsTeam: teamBGols, team: 'B'})
+            const { teamResult: teamAResult } = await createTeamResult.execute({ goalsTeam: teamAGols, team: 'A' })
+            const { teamResult: teamBResult } = await createTeamResult.execute({ goalsTeam: teamBGols, team: 'B' })
             const data: Prisma.MatchResultCreateInput = {
                 teamAResult: { connect: { id: teamAResult.id } },
                 teamBResult: { connect: { id: teamBResult.id } },
                 match: { connect: { id: doesMatchExist.id } },
             }
             const matchResult = await this.matchResultRepository.createMatchResult(data, matchResultInclude) as MatchResultWithRelations
-            try {
-                await this.logRepository.execute({
-                    adminId: 1,
-                    action: LOG_ACTIONS.creating,
-                    entityType: ENTITY_TYPES.matchResult,
-                    entityId: matchResult.id,
-                    newValues: {
-                        teamAId: teamAResult.id,
-                        teamBId: teamBResult.id,
-                        matchId: doesMatchExist.id,
-                    }
-                })
-            } catch (logError) {
-                console.error('Falha ao gerar log:', logError)
-            }
+            await this.logRepository.execute({
+                adminId: 1,
+                action: LOG_ACTIONS.creating,
+                entityType: ENTITY_TYPES.matchResult,
+                entityId: matchResult.id,
+                newValues: {
+                    teamAId: teamAResult.id,
+                    teamBId: teamBResult.id,
+                    matchId: doesMatchExist.id,
+                }
+            })
+
             return { matchResult }
         } catch (error) {
             throw error

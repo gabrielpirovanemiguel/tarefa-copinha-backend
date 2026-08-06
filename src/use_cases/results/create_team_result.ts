@@ -21,18 +21,16 @@ export class CreateTeamResultUseCase {
             } else {
                 teamResult = await this.teamResultRepository.createTeamBResult({ goals: goalsTeam })
             }
-            try {
-                await this.logRepository.execute({
-                    adminId: 1,
-                    action: LOG_ACTIONS.creating,
-                    entityType: ENTITY_TYPES.teamResult,
-                    entityId: teamResult.id,
-                    newValues: goalsTeam,
-                    description: `Criando um resultado do time ${team}.`
-                })
-            } catch (logError) {
-                console.error('Falha ao gerar log:', logError)
-            }
+
+            await this.logRepository.execute({
+                adminId: 1,
+                action: LOG_ACTIONS.creating,
+                entityType: ENTITY_TYPES.teamResult,
+                entityId: teamResult.id,
+                newValues: goalsTeam,
+                description: `Criando um resultado do time ${team}.`
+            })
+
             return { teamResult }
         } catch (error) {
             throw error

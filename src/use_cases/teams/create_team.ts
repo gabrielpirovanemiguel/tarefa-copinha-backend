@@ -53,39 +53,36 @@ export class CreateTeamUseCase {
             if (doesAbbreviationAlreadyExists) throw new TeamAlreadyExistsError("Já existe um time com essa abreviação.")
             const groupId = doesGroupExists.id
             const data = {
-                    name,
-                    abbreviation,
-                    shieldImageUrl,
-                    rankingPosition,
-                    wins,
-                    draws,
-                    losses,
-                    goalsFor,
-                    goalsAgainst,
-                    goalsDifference,
-                    points,
-                    group: {
+                name,
+                abbreviation,
+                shieldImageUrl,
+                rankingPosition,
+                wins,
+                draws,
+                losses,
+                goalsFor,
+                goalsAgainst,
+                goalsDifference,
+                points,
+                group: {
                     connect: { id: groupId }
                 }
             }
-            
+
             const team = await this.teamRepository.createTeam(data)
 
-            try {
-                await this.logRepository.execute({
-                    adminId: 1,
-                    action: LOG_ACTIONS.creating,
-                    entityType: ENTITY_TYPES.group,
-                    entityId: team.id,
-                    newValues: data
-                })
-            } catch (logError) {
-                console.error('Falha ao gerar log:', logError)
-            }
 
-        return { team }
-    } catch(error) {
-        throw error
+            await this.logRepository.execute({
+                adminId: 1,
+                action: LOG_ACTIONS.creating,
+                entityType: ENTITY_TYPES.group,
+                entityId: team.id,
+                newValues: data
+            })
+
+            return { team }
+        } catch (error) {
+            throw error
+        }
     }
-}
 }

@@ -22,15 +22,19 @@ export class GenerateLogUseCase {
         oldValues,
         newValues,
         description}: GenerateLogUseCaseRequest): Promise<void> {
-        await this.logRepository.generateLog({
-            action,
-            entityType,
-            entityId,
-            oldValues,
-            newValues,
-            description,
-            admin: { connect: { id: adminId } }
-        })
+        try {
+            await this.logRepository.generateLog({
+                action,
+                entityType,
+                entityId,
+                oldValues,
+                newValues,
+                description,
+                admin: { connect: { id: adminId } }
+            })
+        } catch (error) {
+            console.error(`Erro ao gerar o log: ${error}`)
+        }
     }
             
 }

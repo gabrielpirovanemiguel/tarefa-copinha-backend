@@ -31,18 +31,18 @@ export class CreateMatchUseCase {
         private stadiumRepository: StadiumRepository,
         private teamRepository: TeamRepository,
         private groupRepository: GroupRepository,
-        private logRepository: GenerateLogUseCase) {}
+        private logRepository: GenerateLogUseCase) { }
     async execute({
-        groupPublicId, 
-        teamAPublicId, 
-        teamBPublicId, 
-        stadiumPublicId, 
-        date, 
-        status}: CreateMatchUseCaseRequest): Promise<CreateMatchUseCaseResponse> {
+        groupPublicId,
+        teamAPublicId,
+        teamBPublicId,
+        stadiumPublicId,
+        date,
+        status }: CreateMatchUseCaseRequest): Promise<CreateMatchUseCaseResponse> {
         try {
             const doesStadiumExist = await this.stadiumRepository.getStadiumByPublicId(stadiumPublicId)
-            const doesTeamAExist = await this.teamRepository.findTeamWhereUnique({publicId: teamAPublicId})
-            const doesTeamBExist = await this.teamRepository.findTeamWhereUnique({publicId: teamBPublicId})
+            const doesTeamAExist = await this.teamRepository.findTeamWhereUnique({ publicId: teamAPublicId })
+            const doesTeamBExist = await this.teamRepository.findTeamWhereUnique({ publicId: teamBPublicId })
             const doesGroupExist = await this.groupRepository.getGroupByPublicId(groupPublicId)
             if (!doesStadiumExist) throw new StadiumNotFoundError()
             if (!doesTeamAExist) throw new TeamNotFoundError(`O time A com o publicId ${teamAPublicId} não foi encontrado.`)
@@ -57,18 +57,14 @@ export class CreateMatchUseCase {
                 stadium: { connect: { id: doesStadiumExist.id } }
             }
             const match = await this.matchRepository.createMatch(data, { group: true, teamA: true, teamB: true, stadium: true }) as MatchWithAllRelations
-            try {
-                await this.logRepository.execute({
-                    adminId: 1,
-                    action: LOG_ACTIONS.creating,
-                    entityType: ENTITY_TYPES.match,
-                    entityId: match.id,
-                    newValues: data
-                })
-            } catch (logError) {
-                console.error('Falha ao gerar log:', logError)
-            }
-            return {match}
+            await this.logRepository.execute({
+                adminId: 1,
+                action: LOG_ACTIONS.creating,
+                entityType: ENTITY_TYPES.match,
+                entityId: match.id,
+                newValues: data
+            })
+            return { match }
         } catch (error) {
             throw error
         }

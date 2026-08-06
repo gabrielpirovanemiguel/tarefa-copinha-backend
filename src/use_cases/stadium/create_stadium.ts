@@ -13,23 +13,19 @@ interface CreateStadiumUseCaseResponse {
 }
 
 export class CreateStadiumUseCase {
-    constructor(private stadiumRepository: StadiumRepository, private logRepository: GenerateLogUseCase) {}
-    async execute({name, city, capacity}: CreateStadiumUseCaseRequest): Promise<CreateStadiumUseCaseResponse> {
+    constructor(private stadiumRepository: StadiumRepository, private logRepository: GenerateLogUseCase) { }
+    async execute({ name, city, capacity }: CreateStadiumUseCaseRequest): Promise<CreateStadiumUseCaseResponse> {
         try {
-            const data = {name, city, capacity}
+            const data = { name, city, capacity }
             const stadium = await this.stadiumRepository.createStadium(data)
-            try {
-                await this.logRepository.execute({
-                    adminId: 1,
-                    action: LOG_ACTIONS.creating,
-                    entityType: ENTITY_TYPES.stadium,
-                    entityId: stadium.id,
-                    newValues: data
-                })
-            } catch (logError) {
-                console.error('Falha ao gerar log:', logError)
-            }
-            return {stadium}
+            await this.logRepository.execute({
+                adminId: 1,
+                action: LOG_ACTIONS.creating,
+                entityType: ENTITY_TYPES.stadium,
+                entityId: stadium.id,
+                newValues: data
+            })
+            return { stadium }
         } catch (error) {
             throw error
         }
