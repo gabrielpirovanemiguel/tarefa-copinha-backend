@@ -101,7 +101,7 @@ model News {
   readingTime   String   @map("reading_time")
   createdAt    DateTime  @default(now()) @map("created_at")
 
-  group        Group    @relation(fields: [groupId], references: [id])
+  group        Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
   author       User     @relation(fields: [authorId], references: [id])
 
   updatedAt    DateTime  @updatedAt @map("updated_at")
@@ -140,7 +140,7 @@ model Team {
   goalsDifference  Int       @map("goals_difference")
   points           Int
 
-  group        Group     @relation(fields: [groupId], references: [id])
+  group        Group     @relation(fields: [groupId], references: [id], onDelete: Cascade)
   matchesTeamA Match[]   @relation("TeamAMatches")
   matchesTeamB Match[]   @relation("TeamBMatches")
 
@@ -161,7 +161,7 @@ model Match {
 
   teamA         Team @relation("TeamAMatches", fields: [teamAId], references: [id])
   teamB         Team @relation("TeamBMatches", fields: [teamBId], references: [id])
-  group         Group  @relation(fields: [groupId], references: [id])
+  group         Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
   stadium       Stadium @relation(fields: [stadiumId], references: [id])
   matchResult    MatchResult?
 
