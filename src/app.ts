@@ -3,6 +3,7 @@ import z, { ZodError } from "zod";
 import fastifyJwt from "@fastify/jwt";
 import { env } from "./env/index.js";
 import { authRoutes } from "@/http/routes/auth.routes.js";
+import { appRoutes } from "./http/routes.js";
 import { simulatorRoutes } from "@/http/routes/simulator.routes.js";
 
 export const app = Fastify({ logger: true });
@@ -10,6 +11,8 @@ export const app = Fastify({ logger: true });
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
 });
+
+app.register(appRoutes);
 
 app.decorate(
   "authenticate",
@@ -24,15 +27,11 @@ app.decorate(
   },
 );
 
-app.get("/health", async (request, reply) => {
-  return reply.status(200).send({ status: "ok" });
-});
-
 app.setErrorHandler((error: any, _request, reply) => {
   if (error instanceof ZodError) {
-    return reply
-      .status(400)
-      .send({ message: z.prettifyError(error).replace("\n ", "") });
+    return reply.status(400).send({
+      message: error.issues[0]?.message ?? 'Dados inválidos.'
+    })
   }
 
   if (error instanceof SyntaxError) {
@@ -53,4 +52,8 @@ app.register(authRoutes, {
 
 app.register(simulatorRoutes, {
   prefix: "/simulator",
+});
+
+app.get("/health", async (request, reply) => {
+  return reply.status(200).send({ status: "ok" });
 });

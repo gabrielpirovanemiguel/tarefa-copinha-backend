@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "ENTITY_TYPES" ADD VALUE 'match';
