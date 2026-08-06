@@ -1,5 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
+import { prisma } from "@/libs/prisma.js";
 
 import { LoginUseCase } from "@/use_cases/auth/login.js";
 import { PrismaUserRepository } from "@/repositories/prisma-user-repository.js";
@@ -24,4 +25,33 @@ export async function login(request: FastifyRequest, reply: FastifyReply) {
   });
 
   return reply.status(200).send(result);
+}
+
+export async function me(request: FastifyRequest, reply: FastifyReply) {
+  const user = await prisma.user.findUnique({
+    where: {
+      publicId: request.user.sub,
+    },
+    select: {
+      publicId: true,
+      name: true,
+      username: true,
+      email: true,
+      role: true,
+    },
+  });
+
+  if (!user) {
+    return reply.status(404).send({
+      message: "User not found.",
+    });
+  }
+
+  return reply.status(200).send(user);
+}
+
+export async function logout(_request: FastifyRequest, reply: FastifyReply) {
+  return reply.status(200).send({
+    message: "Logout successful.",
+  });
 }

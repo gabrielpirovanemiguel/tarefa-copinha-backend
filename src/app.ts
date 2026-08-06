@@ -3,6 +3,7 @@ import z, { ZodError } from "zod";
 import fastifyJwt from "@fastify/jwt";
 import { env } from "./env/index.js";
 import { authRoutes } from "@/http/routes/auth.routes.js";
+import { simulatorRoutes } from "@/http/routes/simulator.routes.js";
 
 export const app = Fastify({ logger: true });
 
@@ -48,4 +49,8 @@ app.setErrorHandler((error: any, _request, reply) => {
 
 app.register(authRoutes, {
   prefix: "/auth",
+});
+
+app.register(simulatorRoutes, {
+  prefix: "/simulator",
 });
