@@ -32,6 +32,7 @@ enum ENTITY_TYPES {
     match
     matchResult
     teamResult
+    news
 }
 
 enum STATUS_MATCH {
