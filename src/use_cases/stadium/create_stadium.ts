@@ -19,7 +19,7 @@ export class CreateStadiumUseCase {
             const data = { name, city, capacity }
             const stadium = await this.stadiumRepository.createStadium(data)
             await this.logRepository.execute({
-                adminId: 1,
+                userId: 1,
                 action: LOG_ACTIONS.creating,
                 entityType: ENTITY_TYPES.stadium,
                 entityId: stadium.id,

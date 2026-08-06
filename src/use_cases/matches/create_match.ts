@@ -58,7 +58,7 @@ export class CreateMatchUseCase {
             }
             const match = await this.matchRepository.createMatch(data, { group: true, teamA: true, teamB: true, stadium: true }) as MatchWithAllRelations
             await this.logRepository.execute({
-                adminId: 1,
+                userId: 1,
                 action: LOG_ACTIONS.creating,
                 entityType: ENTITY_TYPES.match,
                 entityId: match.id,

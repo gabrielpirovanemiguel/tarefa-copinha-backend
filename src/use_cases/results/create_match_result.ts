@@ -48,7 +48,7 @@ export class CreateMatchResultUseCase {
             }
             const matchResult = await this.matchResultRepository.createMatchResult(data, matchResultInclude) as MatchResultWithRelations
             await this.logRepository.execute({
-                adminId: 1,
+                userId: 1,
                 action: LOG_ACTIONS.creating,
                 entityType: ENTITY_TYPES.matchResult,
                 entityId: matchResult.id,

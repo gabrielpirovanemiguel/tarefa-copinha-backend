@@ -3,7 +3,7 @@ import type { Prisma } from "@/@types/prisma/client.js"
 import type { LogPrismaRepository } from "@/respositories/prisma/log_prisma_repository.js"
 
 interface GenerateLogUseCaseRequest {
-  adminId: number
+  userId: number
   action: LOG_ACTIONS
   entityType: ENTITY_TYPES
   entityId: number
@@ -15,7 +15,7 @@ interface GenerateLogUseCaseRequest {
 export class GenerateLogUseCase {
     constructor(private logRepository: LogPrismaRepository) {}
     async execute({
-        adminId,
+        userId,
         action,
         entityType,
         entityId,
@@ -30,7 +30,7 @@ export class GenerateLogUseCase {
                 oldValues,
                 newValues,
                 description,
-                admin: { connect: { id: adminId } }
+                user: { connect: { id: userId } }
             })
         } catch (error) {
             console.error(`Erro ao gerar o log: ${error}`)

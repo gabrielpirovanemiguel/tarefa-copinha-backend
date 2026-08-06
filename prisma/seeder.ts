@@ -1,6 +1,6 @@
-import { prisma } from '@/libs/prisma.js'
-import { USER_ROLE } from '@/@types/prisma/enums.js'
+import { USER_ROLE } from '@/@types/prisma/client.js'
 import { hash } from 'bcryptjs'
+import { prisma } from '@/libs/prisma.js'
 
 export async function seed() {
   await prisma.user.upsert({
@@ -14,14 +14,6 @@ export async function seed() {
       email: 'admin@example.com',
       passwordHash: await hash('1234567890', 10),
       role: USER_ROLE.admin,
-    },
-  })
-
-  await prisma.admin.upsert({
-    where: { userId: 1 },
-    update: {},
-    create: {
-      userId: 1,
     },
   })
 

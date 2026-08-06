@@ -64,7 +64,7 @@ export class CreateNewsUseCase {
             const news = await this.newsRepository.createNews(data, newsInclude) as NewsWithRelations
 
             await this.logRepository.execute({
-                adminId: 1,
+                userId: 1,
                 action: LOG_ACTIONS.creating,
                 entityType: ENTITY_TYPES.news,
                 entityId: news.id,

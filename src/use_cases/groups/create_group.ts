@@ -19,7 +19,7 @@ export class CreateGroupUseCase {
             if (doesGroupAlreadyExists) throw new GroupAlreadyExistsError()
             const group = await this.groupRepository.createGroup({ name })
             await this.logRepository.execute({
-                adminId: 1,
+                userId: 1,
                 action: LOG_ACTIONS.creating,
                 entityType: ENTITY_TYPES.group,
                 entityId: group.id,

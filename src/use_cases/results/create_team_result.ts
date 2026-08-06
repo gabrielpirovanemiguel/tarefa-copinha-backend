@@ -23,7 +23,7 @@ export class CreateTeamResultUseCase {
             }
 
             await this.logRepository.execute({
-                adminId: 1,
+                userId: 1,
                 action: LOG_ACTIONS.creating,
                 entityType: ENTITY_TYPES.teamResult,
                 entityId: teamResult.id,

@@ -1,5 +1,6 @@
 import type { FastifyInstance } from "fastify";
-import { adminRoutes } from "./controllers/admin/admin_routes.js";
+import { adminRoutes } from "./routes/admin_routes.js";
+
 
 
 export async function appRoutes(app: FastifyInstance) {

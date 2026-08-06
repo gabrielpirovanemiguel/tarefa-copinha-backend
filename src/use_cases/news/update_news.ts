@@ -52,7 +52,7 @@ export class UpdateNewsUseCase {
             }
             const news = await this.newsRepository.updateNews({ publicId: newsPublicId }, data, { author: true, group: true }) as NewsWithRelations
             await this.logRepository.execute({
-                adminId: 1,
+                userId: 1,
                 action: LOG_ACTIONS.updating,
                 entityType: ENTITY_TYPES.news,
                 entityId: news.id,
