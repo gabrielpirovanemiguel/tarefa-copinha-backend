@@ -1,12 +1,12 @@
 import { ENTITY_TYPES, LOG_ACTIONS, Prisma, STATUS_MATCH } from "@/@types/prisma/client.js"
 import type { GenerateLogUseCase } from "../logs/generate_log.js"
-import type { StadiumRepository } from "@/respositories/stadium_repository.js"
-import type { TeamRepository } from "@/respositories/team_repository.js"
-import type { GroupRepository } from "@/respositories/group_repository.js"
+import type { StadiumRepository } from "@/repositories/stadium_repository.js"
+import type { TeamRepository } from "@/repositories/team_repository.js"
+import type { GroupRepository } from "@/repositories/group_repository.js"
 import { StadiumNotFoundError } from "../errors/stadium_not_found.js"
 import { TeamNotFoundError } from "../errors/team_not_found.js"
 import { GroupNotFoundError } from "../errors/group_not_found.js"
-import type { MatchRepository } from "@/respositories/match_repository.js"
+import type { MatchRepository } from "@/repositories/match_repository.js"
 
 interface CreateMatchUseCaseRequest {
     groupPublicId: string

@@ -1,10 +1,9 @@
-import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
 import { prisma } from "@/libs/prisma.js";
-
+import type { FastifyReply, FastifyRequest } from "fastify";
 import { LoginUseCase } from "@/use_cases/auth/login.js";
-import { PrismaUserRepository } from "@/repositories/prisma-user-repository.js";
 import { FastifyJwtService } from "@/services/jwt/fastify-jwt-service.js";
+import { UserPrismaRepository } from "@/repositories/prisma/user_prisma_repository.js";
 
 export async function login(request: FastifyRequest, reply: FastifyReply) {
   const bodySchema = z.object({
@@ -15,7 +14,7 @@ export async function login(request: FastifyRequest, reply: FastifyReply) {
   const { email, password } = bodySchema.parse(request.body);
 
   const useCase = new LoginUseCase(
-    new PrismaUserRepository(),
+    new UserPrismaRepository(),
     new FastifyJwtService(),
   );
 

@@ -1,4 +1,4 @@
-import { GroupPrismaRepository } from "@/respositories/prisma/group_prisma_repository.js"
+import { GroupPrismaRepository } from "@/repositories/prisma/group_prisma_repository.js"
 import { CreateGroupUseCase } from "@/use_cases/groups/create_group.js"
 import { makeGenerateLogUseCase } from "../logs/make_generate_log.js"
 

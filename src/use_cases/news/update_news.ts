@@ -3,8 +3,8 @@ import { GroupNotFoundError } from "../errors/group_not_found.js"
 import { NewsNotFoundError } from "../errors/news_not_found.js"
 import type { NewsWithRelations } from "./create_news.js"
 import type { GenerateLogUseCase } from "../logs/generate_log.js"
-import type { GroupRepository } from "@/respositories/group_repository.js"
-import type { NewsRepository } from "@/respositories/news_repository.js"
+import type { GroupRepository } from "@/repositories/group_repository.js"
+import type { NewsRepository } from "@/repositories/news_repository.js"
 
 interface UpdateNewsUseCaseRequest {
     newsPublicId: string

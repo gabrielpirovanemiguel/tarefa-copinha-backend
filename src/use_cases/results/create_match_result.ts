@@ -1,8 +1,8 @@
 import { ENTITY_TYPES, LOG_ACTIONS, Prisma } from "@/@types/prisma/client.js"
 import type { GenerateLogUseCase } from "../logs/generate_log.js"
 import { MatchNotFoundError } from "../errors/match_not_found.js"
-import type { MatchResultRepository } from "@/respositories/match_result_repository.js"
-import type { MatchRepository } from "@/respositories/match_repository.js"
+import type { MatchResultRepository } from "@/repositories/match_result_repository.js"
+import type { MatchRepository } from "@/repositories/match_repository.js"
 import { makeCreateTeamsResultUseCase } from "../factories/results/make_create_teams_result.js"
 import { MatchResultAlreadyExistsError } from "../errors/match_result_already_exists.js"
 

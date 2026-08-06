@@ -1,6 +1,6 @@
 import type { ENTITY_TYPES, LOG_ACTIONS } from "@/@types/prisma/enums.js"
 import type { Prisma } from "@/@types/prisma/client.js"
-import type { LogPrismaRepository } from "@/respositories/prisma/log_prisma_repository.js"
+import type { LogPrismaRepository } from "@/repositories/prisma/log_prisma_repository.js"
 
 interface GenerateLogUseCaseRequest {
   userId: number

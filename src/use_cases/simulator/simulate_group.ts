@@ -1,5 +1,5 @@
-import type { MatchRepository } from "@/repositories/match-repository.js";
-import type { TeamRepository } from "@/repositories/team-repository.js";
+import type { MatchRepository } from "@/repositories/match_repository.js";
+import type { TeamRepository } from "@/repositories/team_repository.js";
 import { StandingService } from "@/services/standings/standings-service.js";
 
 interface SimulationMatch {

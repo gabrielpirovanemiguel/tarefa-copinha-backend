@@ -1,10 +1,9 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
-
-import { PrismaMatchRepository } from "@/repositories/prisma-match-repository.js";
-import { PrismaTeamRepository } from "@/repositories/prisma-team-repository.js";
 import { StandingService } from "@/services/standings/standings-service.js";
-import { SimulateGroupUseCase } from "@/use_cases/simulator/simulate-group.js";
+import { SimulateGroupUseCase } from "@/use_cases/simulator/simulate_group.js";
+import { MatchPrismaRepository } from "@/repositories/prisma/match_prisma_repository.js";
+import { TeamPrismaRepository } from "@/repositories/prisma/team_prisma_repository.js";
 
 export async function simulateGroup(
   request: FastifyRequest,
@@ -25,8 +24,8 @@ export async function simulateGroup(
   const { groupId, matches } = bodySchema.parse(request.body);
 
   const useCase = new SimulateGroupUseCase(
-    new PrismaTeamRepository(),
-    new PrismaMatchRepository(),
+    new TeamPrismaRepository(),
+    new MatchPrismaRepository(),
     new StandingService(),
   );
 
