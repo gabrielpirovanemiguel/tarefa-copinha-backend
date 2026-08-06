@@ -42,20 +42,8 @@ model User {
   passwordHash String    @map("password_hash")
   role         USER_ROLE @default(user)
 
-  admin        Admin?
   news         News[]
-
-  createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime  @updatedAt @map("updated_at")
-}
-
-model Admin {
-  id           Int       @id @default(autoincrement())
-  publicId     String    @unique @default(uuid(7)) @map("public_id")
-  userId       Int       @unique @map("user_id")
-
-  user         User      @relation(fields: [userId], references: [id])
-  logs         Log[]
+  logs Log[]
 
   createdAt    DateTime  @default(now()) @map("created_at")
   updatedAt    DateTime  @updatedAt @map("updated_at")
@@ -64,7 +52,8 @@ model Admin {
 model Log {
   id           Int         @id @default(autoincrement())
   publicId     String      @unique @default(uuid(7)) @map("public_id") 
-  adminId      Int         @map("admin_id")
+
+  userId       Int @map("user_id")
 
   action       LOG_ACTIONS
   entityType   ENTITY_TYPES @map("entity_type")
@@ -73,7 +62,7 @@ model Log {
   newValues    Json?        @map("new_values")
   description  String?
 
-  admin        Admin       @relation(fields: [adminId], references: [id])
+  user         User @relation(fields: [userId], references: [id])
 
   createdAt    DateTime  @default(now()) @map("created_at")
 }
