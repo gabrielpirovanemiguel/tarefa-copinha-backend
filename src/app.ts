@@ -1,4 +1,4 @@
-import Fastify from "fastify";
+import Fastify, { type FastifyReply, type FastifyRequest } from "fastify";
 import z, { ZodError } from "zod";
 import fastifyJwt from "@fastify/jwt";
 import { env } from "./env/index.js";
@@ -9,6 +9,19 @@ export const app = Fastify({ logger: true });
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
 });
+
+app.decorate(
+  "authenticate",
+  async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+      await request.jwtVerify();
+    } catch {
+      reply.status(401).send({
+        message: "Unauthorized.",
+      });
+    }
+  },
+);
 
 app.get("/health", async (request, reply) => {
   return reply.status(200).send({ status: "ok" });

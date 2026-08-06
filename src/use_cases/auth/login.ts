@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { app } from "@/app.js";
 import type { UserRepository } from "@/repositories/user-repository.js";
+import type { JwtService } from "@/services/jwt/jwt-service.js";
 
 interface LoginRequest {
   email: string;
@@ -8,7 +9,10 @@ interface LoginRequest {
 }
 
 export class LoginUseCase {
-  constructor(private usersRepository: UserRepository) {}
+  constructor(
+    private usersRepository: UserRepository,
+    private jwtService: JwtService,
+  ) {}
 
   async execute({ email, password }: LoginRequest) {
     const user = await this.usersRepository.findByEmail(email);
@@ -23,7 +27,7 @@ export class LoginUseCase {
       throw new Error("Invalid credentials.");
     }
 
-    const token = await app.jwt.sign({
+    const token = await this.jwtService.sign({
       sub: user.publicId,
       role: user.role,
     });

@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/hash.js"],"sourcesContent":["import bcrypt from \"bcryptjs\";\r\n\r\nconst hash = await bcrypt.hash(\"123456\", 10);\r\n\r\nconsole.log(hash);\r\n"],"mappings":";AAAA,OAAO,YAAY;AAEnB,IAAM,OAAO,MAAM,OAAO,KAAK,UAAU,EAAE;AAE3C,QAAQ,IAAI,IAAI;","names":[]}
