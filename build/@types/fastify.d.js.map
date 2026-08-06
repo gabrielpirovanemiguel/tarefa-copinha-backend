@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/@types/fastify.d.ts"],"sourcesContent":["import \"fastify\";\r\n\r\ndeclare module \"fastify\" {\r\n  interface FastifyInstance {\r\n    authenticate: (\r\n      request: FastifyRequest,\r\n      reply: FastifyReply,\r\n    ) => Promise<void>;\r\n  }\r\n}\r\n"],"mappings":";AAAA,OAAO;","names":[]}
