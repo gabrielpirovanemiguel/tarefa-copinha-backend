@@ -1,9 +1,11 @@
 import type { ENTITY_TYPES, LOG_ACTIONS } from "@/@types/prisma/enums.js"
 import type { Prisma } from "@/@types/prisma/client.js"
 import type { LogPrismaRepository } from "@/repositories/prisma/log_prisma_repository.js"
+import { UserNotFoundError } from "../errors/user_not_found.js"
+import type { UserRepository } from "@/repositories/user_repository.js"
 
 interface GenerateLogUseCaseRequest {
-  userId: number
+    userPublicId: string
   action: LOG_ACTIONS
   entityType: ENTITY_TYPES
   entityId: number
@@ -13,9 +15,9 @@ interface GenerateLogUseCaseRequest {
 }
 
 export class GenerateLogUseCase {
-    constructor(private logRepository: LogPrismaRepository) {}
+    constructor(private logRepository: LogPrismaRepository, private userRepository: UserRepository) {}
     async execute({
-        userId,
+        userPublicId,
         action,
         entityType,
         entityId,
@@ -23,6 +25,8 @@ export class GenerateLogUseCase {
         newValues,
         description}: GenerateLogUseCaseRequest): Promise<void> {
         try {
+            const user = await this.userRepository.getUserByPublicId(userPublicId)
+            if(!user) throw new UserNotFoundError()
             await this.logRepository.generateLog({
                 action,
                 entityType,
@@ -30,7 +34,7 @@ export class GenerateLogUseCase {
                 oldValues,
                 newValues,
                 description,
-                user: { connect: { id: userId } }
+                user: { connect: { id: user.id } }
             })
         } catch (error) {
             console.error(`Erro ao gerar o log: ${error}`)

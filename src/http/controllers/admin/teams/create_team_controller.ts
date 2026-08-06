@@ -40,7 +40,7 @@ export async function createTeam(
             groupPublicId
          } = createTeamBodySchema.parse(request.body)
         const createTeamUseCase = makeCreateTeamUseCase()
-        const {team} = await createTeamUseCase.execute({name, abbreviation, shieldImageUrl, rankingPosition, wins, draws, losses, goalsFor, goalsAgainst, goalsDifference, points, groupPublicId})
+        const {team} = await createTeamUseCase.execute({userPublicId: request.user.sub, name, abbreviation, shieldImageUrl, rankingPosition, wins, draws, losses, goalsFor, goalsAgainst, goalsDifference, points, groupPublicId})
         
         return reply.status(201).send(TeamPresenter.toHTTP(team))
     } catch (error) {

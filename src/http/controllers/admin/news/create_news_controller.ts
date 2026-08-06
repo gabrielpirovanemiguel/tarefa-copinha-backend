@@ -22,7 +22,7 @@ export async function createNews(
     try {
         const data = createNewsBodySchema.parse(request.body)
         const createNewsUseCase = makeCreateNewsUseCase()
-        const { news } = await createNewsUseCase.execute(data)
+        const { news } = await createNewsUseCase.execute({ ...data, userPublicId: request.user.sub })
 
         return reply.status(201).send(NewsPresenter.toHTTP(news))
     } catch (error) {

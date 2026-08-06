@@ -18,7 +18,7 @@ export async function createMatchResult(
     try {
         const { teamAGols, teamBGols, matchPublicId } = createMatchResultBodySchema.parse(request.body)
         const createMatchResultUseCase = makeCreateMatchResultUseCase()
-        const {matchResult} = await createMatchResultUseCase.execute({teamAGols, teamBGols, matchPublicId})
+        const {matchResult} = await createMatchResultUseCase.execute({userPublicId: request.user.sub, teamAGols, teamBGols, matchPublicId})
         return reply.status(201).send(MatchResultPresenter.toHTTP(matchResult))
     } catch (error) {
         if (error instanceof MatchNotFoundError || error instanceof MatchResultAlreadyExistsError) {

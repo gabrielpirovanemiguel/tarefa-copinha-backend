@@ -8,6 +8,7 @@ import { MatchResultAlreadyExistsError } from "../errors/match_result_already_ex
 
 
 interface CreateMatchResultUseCaseRequest {
+    userPublicId: string
     teamAGols: number
     teamBGols: number
     matchPublicId: string
@@ -32,15 +33,15 @@ export class CreateMatchResultUseCase {
         private matchRepository: MatchRepository,
         private logRepository: GenerateLogUseCase,
     ) { }
-    async execute({ teamAGols, teamBGols, matchPublicId }: CreateMatchResultUseCaseRequest): Promise<CreateMatchResultUseCaseResponse> {
+    async execute({ userPublicId, teamAGols, teamBGols, matchPublicId }: CreateMatchResultUseCaseRequest): Promise<CreateMatchResultUseCaseResponse> {
         try {
             const doesMatchExist = await this.matchRepository.getMatchByPublicId(matchPublicId, { matchResult: true }) as Prisma.MatchGetPayload<{ include: { matchResult: true } }>
             if (!doesMatchExist) throw new MatchNotFoundError()
             if (doesMatchExist.matchResult) throw new MatchResultAlreadyExistsError()
 
             const createTeamResult = makeCreateTeamsResultUseCase()
-            const { teamResult: teamAResult } = await createTeamResult.execute({ goalsTeam: teamAGols, team: 'A' })
-            const { teamResult: teamBResult } = await createTeamResult.execute({ goalsTeam: teamBGols, team: 'B' })
+            const { teamResult: teamAResult } = await createTeamResult.execute({ userPublicId, goalsTeam: teamAGols, team: 'A' })
+            const { teamResult: teamBResult } = await createTeamResult.execute({ userPublicId, goalsTeam: teamBGols, team: 'B' })
             const data: Prisma.MatchResultCreateInput = {
                 teamAResult: { connect: { id: teamAResult.id } },
                 teamBResult: { connect: { id: teamBResult.id } },
@@ -48,7 +49,7 @@ export class CreateMatchResultUseCase {
             }
             const matchResult = await this.matchResultRepository.createMatchResult(data, matchResultInclude) as MatchResultWithRelations
             await this.logRepository.execute({
-                userId: 1,
+                userPublicId,
                 action: LOG_ACTIONS.creating,
                 entityType: ENTITY_TYPES.matchResult,
                 entityId: matchResult.id,

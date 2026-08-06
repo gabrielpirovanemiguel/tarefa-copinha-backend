@@ -7,6 +7,7 @@ import { GroupNotFoundError } from "../errors/group_not_found.js"
 import { UserNotFoundError } from "../errors/user_not_found.js"
 
 interface CreateNewsUseCaseRequest {
+    userPublicId: string
     authorPublicId: string
     groupPublicId: string
     title: string
@@ -36,6 +37,7 @@ export class CreateNewsUseCase {
     ) { }
 
     async execute({
+        userPublicId,
         authorPublicId,
         groupPublicId,
         title,
@@ -64,7 +66,7 @@ export class CreateNewsUseCase {
             const news = await this.newsRepository.createNews(data, newsInclude) as NewsWithRelations
 
             await this.logRepository.execute({
-                userId: 1,
+                userPublicId,
                 action: LOG_ACTIONS.creating,
                 entityType: ENTITY_TYPES.news,
                 entityId: news.id,
