@@ -1,5 +1,5 @@
 import { prisma } from "@/libs/prisma.js";
-import type { Prisma } from "@/@types/prisma/browser.js";
+import type { Prisma } from "@/@types/prisma/client.js";
 import type { MatchRepository } from "../match_repository.js";
 
 
