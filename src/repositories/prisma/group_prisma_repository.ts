@@ -17,4 +17,8 @@ export class GroupPrismaRepository implements GroupRepository {
     async findGroupWhereUnique(where: Prisma.GroupWhereUniqueInput, include?: Prisma.GroupInclude) {
         return await prisma.group.findUnique({ where, include })
     }
+
+    async updateGroup(where: Prisma.GroupWhereUniqueInput, data: Prisma.GroupUpdateInput, include?: Prisma.GroupInclude) {
+        return await prisma.group.update({ where, data, include })
+    }
 }
