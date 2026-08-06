@@ -1,6 +1,6 @@
 import { ENTITY_TYPES, LOG_ACTIONS, type TeamAResult, type TeamBResult } from "@/@types/prisma/client.js"
 import type { GenerateLogUseCase } from "../logs/generate_log.js"
-import type { TeamsResultRepository } from "@/respositories/teams_result_repository.js"
+import type { TeamsResultRepository } from "@/repositories/teams_result_repository.js"
 
 interface CreateTeamResultUseCaseRequest {
     goalsTeam: number

@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
-import type { UserRepository } from "@/repositories/user-repository.js";
 import type { JwtService } from "@/services/jwt/jwt-service.js";
+import type { UserRepository } from "@/repositories/user_repository.js";
 
 interface LoginRequest {
   email: string;

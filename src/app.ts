@@ -2,9 +2,9 @@ import Fastify, { type FastifyReply, type FastifyRequest } from "fastify";
 import z, { ZodError } from "zod";
 import fastifyJwt from "@fastify/jwt";
 import { env } from "./env/index.js";
-import { authRoutes } from "@/http/routes/auth.routes.js";
+import { authRoutes } from "@/http/routes/auth_routes.js";
 import { appRoutes } from "./http/routes.js";
-import { simulatorRoutes } from "@/http/routes/simulator.routes.js";
+import { simulatorRoutes } from "@/http/routes/simulator_routes.js";
 
 export const app = Fastify({ logger: true });
 

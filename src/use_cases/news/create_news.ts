@@ -1,8 +1,8 @@
 import { ENTITY_TYPES, LOG_ACTIONS, Prisma } from "@/@types/prisma/client.js"
 import type { GenerateLogUseCase } from "../logs/generate_log.js"
-import type { NewsRepository } from "@/respositories/news_repository.js"
-import type { GroupRepository } from "@/respositories/group_repository.js"
-import type { UserRepository } from "@/respositories/user_repository.js"
+import type { NewsRepository } from "@/repositories/news_repository.js"
+import type { GroupRepository } from "@/repositories/group_repository.js"
+import type { UserRepository } from "@/repositories/user_repository.js"
 import { GroupNotFoundError } from "../errors/group_not_found.js"
 import { UserNotFoundError } from "../errors/user_not_found.js"
 

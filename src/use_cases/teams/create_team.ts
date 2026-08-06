@@ -1,6 +1,6 @@
 import { ENTITY_TYPES, LOG_ACTIONS, type Team } from "@/@types/prisma/client.js"
-import type { GroupRepository } from "@/respositories/group_repository.js"
-import type { TeamRepository } from "@/respositories/team_repository.js"
+import type { GroupRepository } from "@/repositories/group_repository.js"
+import type { TeamRepository } from "@/repositories/team_repository.js"
 import { GroupNotFoundError } from "../errors/group_not_found.js"
 import { TeamAlreadyExistsError } from "../errors/team_already_exists.js"
 import type { GenerateLogUseCase } from "../logs/generate_log.js"

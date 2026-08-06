@@ -1,8 +1,8 @@
-import { GroupPrismaRepository } from "@/respositories/prisma/group_prisma_repository.js"
+import { GroupPrismaRepository } from "@/repositories/prisma/group_prisma_repository.js"
 import { makeGenerateLogUseCase } from "../logs/make_generate_log.js"
-import { TeamPrismaRepository } from "@/respositories/prisma/team_prisma_repository.js"
-import { StadiumPrismaRepository } from "@/respositories/prisma/stadium_prisma_repository.js"
-import { MatchPrismaRepository } from "@/respositories/prisma/match_prisma_repository.js"
+import { TeamPrismaRepository } from "@/repositories/prisma/team_prisma_repository.js"
+import { StadiumPrismaRepository } from "@/repositories/prisma/stadium_prisma_repository.js"
+import { MatchPrismaRepository } from "@/repositories/prisma/match_prisma_repository.js"
 import { CreateMatchUseCase } from "@/use_cases/matches/create_match.js"
 
 

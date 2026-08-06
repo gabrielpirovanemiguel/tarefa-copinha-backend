@@ -1,5 +1,5 @@
 import { ENTITY_TYPES, LOG_ACTIONS, type Group } from "@/@types/prisma/client.js"
-import type { GroupRepository } from "@/respositories/group_repository.js"
+import type { GroupRepository } from "@/repositories/group_repository.js"
 import { GroupAlreadyExistsError } from "../errors/group_already_exists.js"
 import type { GenerateLogUseCase } from "../logs/generate_log.js"
 

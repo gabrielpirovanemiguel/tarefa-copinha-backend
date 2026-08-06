@@ -1,6 +1,6 @@
 import { ENTITY_TYPES, LOG_ACTIONS, type Stadium } from "@/@types/prisma/client.js"
 import type { GenerateLogUseCase } from "../logs/generate_log.js"
-import type { StadiumRepository } from "@/respositories/stadium_repository.js"
+import type { StadiumRepository } from "@/repositories/stadium_repository.js"
 
 interface CreateStadiumUseCaseRequest {
     name: string

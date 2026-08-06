@@ -6,4 +6,7 @@ export class UserPrismaRepository implements UserRepository {
     async getUserByPublicId(publicId: string, include?: Prisma.UserInclude) {
         return await prisma.user.findUnique({ where: { publicId }, include })
     }
+    async findByEmail(email: string) {
+        return prisma.user.findUnique({where: {email}})
+    }
 }

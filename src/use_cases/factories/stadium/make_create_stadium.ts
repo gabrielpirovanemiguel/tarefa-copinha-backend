@@ -1,4 +1,4 @@
-import { StadiumPrismaRepository } from "@/respositories/prisma/stadium_prisma_repository.js"
+import { StadiumPrismaRepository } from "@/repositories/prisma/stadium_prisma_repository.js"
 import { makeGenerateLogUseCase } from "../logs/make_generate_log.js"
 import { CreateStadiumUseCase } from "@/use_cases/stadium/create_stadium.js"
 
