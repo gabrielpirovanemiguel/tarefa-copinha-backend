@@ -1,5 +1,6 @@
 import { ENTITY_TYPES, LOG_ACTIONS, type TeamAResult, type TeamBResult } from "@/@types/prisma/client.js"
 import type { GenerateLogUseCase } from "../logs/generate_log.js"
+import type { TeamsResultRepository } from "@/respositories/teams_result_repository.js"
 
 interface CreateTeamResultUseCaseRequest {
     goalsTeam: number
@@ -11,7 +12,7 @@ interface CreateTeamResultUseCaseResponse {
 }
 
 export class CreateTeamResultUseCase {
-    constructor(private teamResultRepository: any, private logRepository: GenerateLogUseCase) { }
+    constructor(private teamResultRepository: TeamsResultRepository, private logRepository: GenerateLogUseCase) { }
     async execute({ goalsTeam, team }: CreateTeamResultUseCaseRequest): Promise<CreateTeamResultUseCaseResponse> {
         try {
             let teamResult
