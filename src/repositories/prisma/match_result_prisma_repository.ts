@@ -9,4 +9,8 @@ export class MatchResultPrismaRepository implements MatchResultRepository {
     async getMatchResultByPublicId(publicId: string, include?: Prisma.MatchResultInclude) {
         return await prisma.matchResult.findUnique({ where: { publicId }, include });
     }
-}
+
+    async deleteMatchResult(where: Prisma.MatchResultWhereUniqueInput) {
+        await prisma.matchResult.delete({ where });
+    }
+}
