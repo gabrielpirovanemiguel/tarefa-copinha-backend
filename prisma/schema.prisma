@@ -148,8 +148,8 @@ model Match {
   date          DateTime
   status        STATUS_MATCH
 
-  teamA         Team @relation("TeamAMatches", fields: [teamAId], references: [id])
-  teamB         Team @relation("TeamBMatches", fields: [teamBId], references: [id])
+  teamA         Team @relation("TeamAMatches", fields: [teamAId], references: [id], onDelete: Cascade)
+  teamB         Team @relation("TeamBMatches", fields: [teamBId], references: [id], onDelete: Cascade)
   group         Group  @relation(fields: [groupId], references: [id], onDelete: Cascade)
   stadium       Stadium @relation(fields: [stadiumId], references: [id], onDelete: Cascade)
   matchResult    MatchResult?
