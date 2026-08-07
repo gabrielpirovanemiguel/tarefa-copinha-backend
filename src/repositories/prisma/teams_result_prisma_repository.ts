@@ -12,4 +12,12 @@ export class TeamsResultPrismaRepository implements TeamsResultRepository {
     async createTeamBResult(data: Prisma.TeamBResultCreateInput) {
         return await prisma.teamBResult.create({ data });
     }
+
+    async updateTeamAResult(where: Prisma.TeamAResultWhereUniqueInput, data: Prisma.TeamAResultUpdateInput) {
+        return await prisma.teamAResult.update({ where, data });
+    }
+
+    async updateTeamBResult(where: Prisma.TeamBResultWhereUniqueInput, data: Prisma.TeamBResultUpdateInput) {
+        return await prisma.teamBResult.update({ where, data });
+    }
 }
