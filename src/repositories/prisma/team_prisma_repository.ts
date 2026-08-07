@@ -19,4 +19,9 @@ export class TeamPrismaRepository implements TeamRepository {
             abbreviation: team.abbreviation,
         }))
     }
+
+    async listByGroup(groupId: number){
+        const teams = await prisma.team.findMany({where: { groupId }})
+        return teams 
+    }
 }

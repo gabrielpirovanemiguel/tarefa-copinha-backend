@@ -1,14 +1,16 @@
+import type { Team } from "@/@types/prisma/client.js";
+import type { TeamRepository } from "@/repositories/team_repository.js";
 
 type ListTeamsByGroupUseCaseResponse = {
     teams: Team[]
 }
 
 type ListTeamsByGroupUseCaseRequest = {
-    groupId: string
+    groupId: number
 }
 
 export class ListTeamsByGroupUseCase {
-    constructor(private teamsRepository: TeamsRepository) {}
+    constructor(private teamsRepository: TeamRepository) {}
 
     async execute(
         { groupId }: ListTeamsByGroupUseCaseRequest

@@ -13,6 +13,18 @@ interface HTTPMatch {
     atualizadoEm: Date
 }
 
+interface HTTPRawMatch {
+  id: string
+  data: Date
+  status: string
+  groupId: number
+  teamAId: number
+  teamBId: number
+  stadiumId: number
+  criadoEm: Date
+  atualizadoEm: Date
+}
+
 export class MatchPresenter {
     static toHTTP(match: MatchWithAllRelations): HTTPMatch
     static toHTTP(matches: MatchWithAllRelations[]): HTTPMatch[]
@@ -32,5 +44,27 @@ export class MatchPresenter {
             criadoEm: input.createdAt,
             atualizadoEm: input.updatedAt,
         }
+    }
+
+    //Presenter pra Match puro sem detalhes
+    static RawtoHTTP(match: Match): HTTPRawMatch;
+    static RawtoHTTP(matches: Match[]): HTTPRawMatch[];
+
+    static RawtoHTTP(input: Match | Match[]): HTTPRawMatch | HTTPRawMatch[] {
+        if (Array.isArray(input)) {
+            return input.map((match) => this.RawtoHTTP(match));
+        }
+
+        return {
+            id: input.publicId,
+            data: input.date,
+            status: input.status,
+            groupId: input.groupId,
+            teamAId: input.teamAId,
+            teamBId: input.teamBId,
+            stadiumId: input.stadiumId,
+            criadoEm: input.createdAt,
+            atualizadoEm: input.updatedAt,
+        };
     }
 }

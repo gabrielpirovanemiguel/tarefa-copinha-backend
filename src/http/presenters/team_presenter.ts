@@ -36,7 +36,7 @@ export class TeamPresenter {
             empates: input.draws,
             golsPro: input.goalsFor,
             golsContra: input.goalsAgainst,
-            saldoGols: input.goalsDifference,
+            saldoGols: input.goalDifference,
             pontos: input.points,
             criadoEm: input.createdAt,
             atualizadoEm: input.updatedAt,
