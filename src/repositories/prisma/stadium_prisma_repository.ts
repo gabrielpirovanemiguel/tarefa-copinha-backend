@@ -15,4 +15,8 @@ export class StadiumPrismaRepository implements StadiumRepository {
     async updateStadium(where: Prisma.StadiumWhereUniqueInput, data: Prisma.StadiumUpdateInput) {
         return await prisma.stadium.update({ where, data })
     }
-}
+
+    async deleteStadium(where: Prisma.StadiumWhereUniqueInput) {
+        await prisma.stadium.delete({ where })
+    }
+}
