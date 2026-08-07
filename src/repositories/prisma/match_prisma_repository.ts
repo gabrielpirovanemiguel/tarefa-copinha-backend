@@ -12,6 +12,9 @@ export class MatchPrismaRepository implements MatchRepository {
     async getMatchByPublicId(publicId: string, include?: Prisma.MatchInclude) {
         return await prisma.match.findUnique({ where: { publicId }, include: include })
     }
+    async updateMatch(where: Prisma.MatchWhereUniqueInput, data: Prisma.MatchUpdateInput, include?: Prisma.MatchInclude) {
+        return await prisma.match.update({ where, data, include })
+    }
     async findByGroup(groupId: number) {
         const matches = await prisma.match.findMany({
             where: {
