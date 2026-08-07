@@ -11,4 +11,8 @@ export class StadiumPrismaRepository implements StadiumRepository {
     async getStadiumByPublicId(publicId: string) {
         return await prisma.stadium.findUnique({ where: { publicId } })
     }
+
+    async updateStadium(where: Prisma.StadiumWhereUniqueInput, data: Prisma.StadiumUpdateInput) {
+        return await prisma.stadium.update({ where, data })
+    }
 }
