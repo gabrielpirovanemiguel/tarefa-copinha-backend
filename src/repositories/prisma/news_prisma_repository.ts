@@ -16,4 +16,8 @@ export class NewsPrismaRepository implements NewsRepository {
     async updateNews(where: Prisma.NewsWhereUniqueInput, data: Prisma.NewsUpdateInput, include?: NewsInclude) {
         return await prisma.news.update({ where, data, include })
     }
+
+    async deleteNews(where: Prisma.NewsWhereUniqueInput) {
+        await prisma.news.delete({ where })
+    }
 }

@@ -6,6 +6,7 @@ import { TeamAlreadyExistsError } from "../errors/team_already_exists.js"
 import type { GenerateLogUseCase } from "../logs/generate_log.js"
 
 interface CreateTeamUseCaseRequest {
+    userPublicId: string
     groupPublicId: string
     name: string
     abbreviation: string
@@ -31,6 +32,7 @@ export class CreateTeamUseCase {
         private logRepository: GenerateLogUseCase
     ) { }
     async execute({
+        userPublicId,
         groupPublicId,
         name,
         abbreviation,
@@ -73,7 +75,7 @@ export class CreateTeamUseCase {
 
 
             await this.logRepository.execute({
-                userId: 1,
+                userPublicId,
                 action: LOG_ACTIONS.creating,
                 entityType: ENTITY_TYPES.group,
                 entityId: team.id,

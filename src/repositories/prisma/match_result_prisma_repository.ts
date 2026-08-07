@@ -6,4 +6,11 @@ export class MatchResultPrismaRepository implements MatchResultRepository {
     async createMatchResult(data: Prisma.MatchResultCreateInput, include?: Prisma.MatchResultInclude) {
         return await prisma.matchResult.create({ data, include});
     }
-}
+    async getMatchResultByPublicId(publicId: string, include?: Prisma.MatchResultInclude) {
+        return await prisma.matchResult.findUnique({ where: { publicId }, include });
+    }
+
+    async deleteMatchResult(where: Prisma.MatchResultWhereUniqueInput) {
+        await prisma.matchResult.delete({ where });
+    }
+}

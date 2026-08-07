@@ -5,4 +5,5 @@ export interface NewsRepository {
     createNews(data: Prisma.NewsCreateInput, include?: NewsInclude): Promise<News>
     getNewsByPublicId(publicId: string, include?: NewsInclude): Promise<News | null>
     updateNews(where: Prisma.NewsWhereUniqueInput, data: Prisma.NewsUpdateInput, include?: NewsInclude): Promise<News>
+    deleteNews(where: Prisma.NewsWhereUniqueInput): Promise<void>
 }

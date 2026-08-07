@@ -25,7 +25,7 @@ export async function createMatch(
     try {
         const { date, status, groupPublicId, teamAPublicId, teamBPublicId, stadiumPublicId } = createMatchBodySchema.parse(request.body)
         const createMatchUseCase = makeCreateMatchUseCase()
-        const {match} = await createMatchUseCase.execute({date, status, groupPublicId, teamAPublicId, teamBPublicId, stadiumPublicId})
+        const {match} = await createMatchUseCase.execute({userPublicId: request.user.sub, date, status, groupPublicId, teamAPublicId, teamBPublicId, stadiumPublicId})
         return reply.status(201).send(MatchPresenter.toHTTP(match))
     } catch (error) {
         if (error instanceof GroupNotFoundError || error instanceof TeamNotFoundError || error instanceof StadiumNotFoundError) {

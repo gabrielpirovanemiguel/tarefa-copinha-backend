@@ -9,6 +9,7 @@ import { GroupNotFoundError } from "../errors/group_not_found.js"
 import type { MatchRepository } from "@/repositories/match_repository.js"
 
 interface CreateMatchUseCaseRequest {
+    userPublicId: string
     groupPublicId: string
     teamAPublicId: string
     teamBPublicId: string
@@ -33,6 +34,7 @@ export class CreateMatchUseCase {
         private groupRepository: GroupRepository,
         private logRepository: GenerateLogUseCase) { }
     async execute({
+        userPublicId,
         groupPublicId,
         teamAPublicId,
         teamBPublicId,
@@ -58,7 +60,7 @@ export class CreateMatchUseCase {
             }
             const match = await this.matchRepository.createMatch(data, { group: true, teamA: true, teamB: true, stadium: true }) as MatchWithAllRelations
             await this.logRepository.execute({
-                userId: 1,
+                userPublicId,
                 action: LOG_ACTIONS.creating,
                 entityType: ENTITY_TYPES.match,
                 entityId: match.id,

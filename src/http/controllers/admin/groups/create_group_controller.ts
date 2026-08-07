@@ -15,7 +15,7 @@ export async function createGroup(
     try {
         const { name } = createGroupBodySchema.parse(request.body)
         const createGroupUseCase = makeCreateGroupUseCase()
-        const {group} = await createGroupUseCase.execute({name})
+        const {group} = await createGroupUseCase.execute({name, userPublicId: request.user.sub})
         
         return reply.status(201).send(GroupPresenter.toHTTP(group))
     } catch (error) {

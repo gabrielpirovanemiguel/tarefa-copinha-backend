@@ -5,6 +5,7 @@ import type { GenerateLogUseCase } from "../logs/generate_log.js"
 
 interface CreateGroupUseCaseRequest {
     name: string
+    userPublicId: string
 }
 
 interface CreateGroupUseCaseResponse {
@@ -13,13 +14,13 @@ interface CreateGroupUseCaseResponse {
 
 export class CreateGroupUseCase {
     constructor(private groupRepository: GroupRepository, private logRepository: GenerateLogUseCase) { }
-    async execute({ name }: CreateGroupUseCaseRequest): Promise<CreateGroupUseCaseResponse> {
+    async execute({ name, userPublicId }: CreateGroupUseCaseRequest): Promise<CreateGroupUseCaseResponse> {
         try {
             const doesGroupAlreadyExists = await this.groupRepository.findGroupWhereUnique({ name })
             if (doesGroupAlreadyExists) throw new GroupAlreadyExistsError()
             const group = await this.groupRepository.createGroup({ name })
             await this.logRepository.execute({
-                userId: 1,
+                userPublicId,
                 action: LOG_ACTIONS.creating,
                 entityType: ENTITY_TYPES.group,
                 entityId: group.id,

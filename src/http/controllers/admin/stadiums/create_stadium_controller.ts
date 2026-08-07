@@ -16,7 +16,7 @@ export async function createStadium(
     try {
         const { name, city, capacity } = createStadiumBodySchema.parse(request.body)
         const createStadiumUseCase = makeCreateStadiumUseCase()
-        const {stadium} = await createStadiumUseCase.execute({name, city, capacity})
+        const {stadium} = await createStadiumUseCase.execute({userPublicId: request.user.sub, name, city, capacity})
         return reply.status(201).send(StadiumPresenter.toHTTP(stadium))
     } catch (error) {
         throw error

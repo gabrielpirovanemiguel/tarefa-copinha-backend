@@ -7,6 +7,7 @@ import type { GroupRepository } from "@/repositories/group_repository.js"
 import type { NewsRepository } from "@/repositories/news_repository.js"
 
 interface UpdateNewsUseCaseRequest {
+    userPublicId: string
     newsPublicId: string
     groupPublicId?: string
     title?: string
@@ -27,6 +28,7 @@ export class UpdateNewsUseCase {
         private logRepository: GenerateLogUseCase
     ) { }
     async execute({
+        userPublicId,
         newsPublicId,
         groupPublicId,
         title,
@@ -52,7 +54,7 @@ export class UpdateNewsUseCase {
             }
             const news = await this.newsRepository.updateNews({ publicId: newsPublicId }, data, { author: true, group: true }) as NewsWithRelations
             await this.logRepository.execute({
-                userId: 1,
+                userPublicId,
                 action: LOG_ACTIONS.updating,
                 entityType: ENTITY_TYPES.news,
                 entityId: news.id,

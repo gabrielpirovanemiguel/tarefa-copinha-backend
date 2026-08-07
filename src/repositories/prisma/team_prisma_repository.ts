@@ -10,6 +10,12 @@ export class TeamPrismaRepository implements TeamRepository {
     async findTeamWhereUnique(where: Prisma.TeamWhereUniqueInput, include?: Prisma.TeamInclude) {
         return await prisma.team.findUnique({ where, include })
     }
+    async updateTeam(where: Prisma.TeamWhereUniqueInput, data: Prisma.TeamUpdateInput, include?: Prisma.TeamInclude) {
+        return await prisma.team.update({ where, data, include })
+    }
+    async deleteTeam(where: Prisma.TeamWhereUniqueInput) {
+        await prisma.team.delete({ where })
+    }
     async findByGroup(groupId: number) {
         const teams = await prisma.team.findMany({where: {groupId}})
         return teams.map((team) => ({
@@ -19,4 +25,4 @@ export class TeamPrismaRepository implements TeamRepository {
             abbreviation: team.abbreviation,
         }))
     }
-}
+}

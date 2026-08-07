@@ -3,6 +3,7 @@ import type { GenerateLogUseCase } from "../logs/generate_log.js"
 import type { TeamsResultRepository } from "@/repositories/teams_result_repository.js"
 
 interface CreateTeamResultUseCaseRequest {
+    userPublicId: string
     goalsTeam: number
     team: 'A' | 'B'
 }
@@ -13,7 +14,7 @@ interface CreateTeamResultUseCaseResponse {
 
 export class CreateTeamResultUseCase {
     constructor(private teamResultRepository: TeamsResultRepository, private logRepository: GenerateLogUseCase) { }
-    async execute({ goalsTeam, team }: CreateTeamResultUseCaseRequest): Promise<CreateTeamResultUseCaseResponse> {
+    async execute({ userPublicId, goalsTeam, team }: CreateTeamResultUseCaseRequest): Promise<CreateTeamResultUseCaseResponse> {
         try {
             let teamResult
             if (team === 'A') {
@@ -23,7 +24,7 @@ export class CreateTeamResultUseCase {
             }
 
             await this.logRepository.execute({
-                userId: 1,
+                userPublicId,
                 action: LOG_ACTIONS.creating,
                 entityType: ENTITY_TYPES.teamResult,
                 entityId: teamResult.id,
