@@ -7,6 +7,7 @@ interface HTTPTeam {
     escudoUrl: string
     posicaoRanking: number
     vitorias: number
+    grupo: string
     derrotas: number
     empates: number
     golsPro: number
@@ -32,6 +33,7 @@ export class TeamPresenter {
             escudoUrl: input.shieldImageUrl,
             posicaoRanking: input.rankingPosition,
             vitorias: input.wins,
+            grupo: input.group.name,
             derrotas: input.losses,
             empates: input.draws,
             golsPro: input.goalsFor,
